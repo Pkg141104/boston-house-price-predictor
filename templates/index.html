@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>California House Price Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f3;
+            text-align: center;
+            padding: 30px;
+        }
+        form {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+        input {
+            margin: 10px;
+            padding: 10px;
+            width: 280px;
+        }
+        button {
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>California Housing Price Predictor</h2>
+    <form action="/predict" method="post">
+        {% for i in range(8) %}
+            <input type="text" name="feature{{ i }}" placeholder="Feature {{ i+1 }}" required><br>
+        {% endfor %}
+        <button type="submit">Predict</button>
+    </form>
+    <h3>{{ prediction_text }}</h3>
+</body>
+</html>
