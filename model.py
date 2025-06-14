@@ -1,21 +1,27 @@
-# train_model.py
 import pandas as pd
-from sklearn.datasets import load_boston
+from sklearn.datasets import fetch_california_housing
 from sklearn.linear_model import LinearRegression
 import pickle
 
-# Load dataset
-boston = load_boston()
-X = pd.DataFrame(boston.data, columns=boston.feature_names)
-y = boston.target
+# Load California housing data
+california = fetch_california_housing()
+df = pd.DataFrame(california.data, columns=california.feature_names)
+df['MedHouseVal'] = california.target
 
-# Select only 8 features for simplicity
-selected_features = ['RM', 'LSTAT', 'PTRATIO', 'INDUS', 'TAX', 'NOX', 'AGE', 'CRIM']
-X_selected = X[selected_features]
+# Features and Target
+X = df.drop('MedHouseVal', axis=1)
+y = df['MedHouseVal']
 
 # Train model
 model = LinearRegression()
-model.fit(X_selected, y)
+model.fit(X, y)
 
 # Save model
-pickle.dump(model, open('model.pkl', 'wb'))
+with open('model.pkl', 'wb') as f:
+    pickle.dump(model, f)
+
+# Save predictions to CSV
+df['Predicted'] = model.predict(X)
+df.to_csv('prediction_data.csv', index=False)
+
+print("✅ Model trained and saved to model.pkl and prediction_data.csv")
